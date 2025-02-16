@@ -1,10 +1,9 @@
-name: release-pdf-toolbox
+name: Release
 
 on:
-  workflow_dispatch:
   push:
     tags:
-      - 'v*'  # Triggers when pushing a tag like "v1.0.0"
+      - 'v*' # Trigger on version tags
 
 jobs:
   release:
@@ -12,22 +11,22 @@ jobs:
     permissions:
       contents: write
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for changelog generation
 
-    - name: Download Build Artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: pdf-toolbox
-        path: dist/
+      - name: Generate changelog
+        run: |
+          echo "## What's Changed" > CHANGELOG.md
+          git log $(git describe --tags --abbrev=0 HEAD^)..HEAD --pretty=format:"* %s" >> CHANGELOG.md
 
-    - name: Create GitHub Release
-      uses: softprops/action-gh-release@v2
-      with:
-        tag_name: ${{ github.ref_name }}
-        name: Release ${{ github.ref_name }}
-        body: "Automated release of ${{ github.ref_name }}"
-        draft: false
-        prerelease: false
-        files: dist/*
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: CHANGELOG.md
+          files: |
+            dist/pdf-toolbox-linux-amd64
+            dist/pdf-toolbox-mac-amd64
+            dist/pdf-toolbox-win-amd64.exe
+          draft: false
+          prerelease: false
