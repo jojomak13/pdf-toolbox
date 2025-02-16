@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     tags:
-      - 'v*' # Trigger on version tags
+      - 'v*'
 
 jobs:
   release:
@@ -13,12 +13,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Fetch all history for changelog generation
+          fetch-depth: 0
 
       - name: Generate changelog
         run: |
-          echo "## What's Changed" > CHANGELOG.md
-          git log $(git describe --tags --abbrev=0 HEAD^)..HEAD --pretty=format:"* %s" >> CHANGELOG.md
+          # Get the previous tag, if it exists
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          if [ -z "$PREV_TAG" ]; then
+            # If no previous tag exists, get all commits
+            git log --pretty=format:"* %s" > CHANGELOG.md
+          else
+            # Get commits since the last tag
+            git log ${PREV_TAG}..HEAD --pretty=format:"* %s" > CHANGELOG.md
+          fi
 
       - name: Create Release
         uses: softprops/action-gh-release@v1

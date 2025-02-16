@@ -3,13 +3,15 @@ name: build-pdf-toolbox
 on:
   push:
     branches: [ "main" ]
+    # Prevent workflow from triggering on dist updates
+    paths-ignore:
+      - 'dist/**'
   pull_request:
     branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    # Add permissions block
     permissions:
       contents: write
     steps:
@@ -39,13 +41,10 @@ jobs:
         name: pdf-toolbox
         path: dist/
 
-    - name: Commit dist directory
+    - name: Commit and push changes
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git add dist/
-        git commit -m "Update dist artifacts" || echo "No changes to commit"
-
-    - name: Push changes
-      run: |
+        git commit -m "[automated] Update dist artifacts" || echo "No changes to commit"
         git push
