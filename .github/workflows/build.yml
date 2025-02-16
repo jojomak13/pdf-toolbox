@@ -9,8 +9,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # Add permissions block
+    permissions:
+      contents: write
     steps:
     - uses: actions/checkout@v4
+      with:
+        # Add token authentication
+        token: ${{ secrets.PAT_TOKEN }}
 
     - name: Set up Go
       uses: actions/setup-go@v4
@@ -41,7 +47,5 @@ jobs:
         git commit -m "Update dist artifacts" || echo "No changes to commit"
 
     - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
+      run: |
+        git push
