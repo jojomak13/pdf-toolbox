@@ -8,7 +8,8 @@ import (
 )
 
 type MergeRequest struct {
-	Urls []string `json:"urls"`
+	FilePath string   `json:"file_path"`
+	Urls     []string `json:"urls"`
 }
 
 func Merge(c *fiber.Ctx) error {
@@ -26,5 +27,19 @@ func Merge(c *fiber.Ctx) error {
 		return core.WithError(c, err.Error(), http.StatusBadRequest)
 	}
 
-	return core.WithSuccess(c, "success", fiber.Map{})
+	url, err := toolBox.Upload(req.FilePath)
+	if err != nil {
+		core.Logger.Println(err.Error())
+
+		return core.WithError(c, err.Error(), http.StatusBadRequest)
+	}
+
+	if err = toolBox.Clean(); err != nil {
+
+		return core.WithError(c, err.Error(), http.StatusBadRequest)
+	}
+
+	return core.WithSuccess(c, "success", fiber.Map{
+		"url": url,
+	})
 }

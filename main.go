@@ -22,6 +22,7 @@ func init() {
 
 	core.LoadLogger()
 
+	core.NewUploader()
 }
 
 func main() {

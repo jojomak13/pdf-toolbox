@@ -1,6 +1,7 @@
 package core
 
 import (
+	"io"
 	"os"
 	"path"
 	"sync"
@@ -53,4 +54,23 @@ func (tb *ToolBox) getFiles() ([]string, error) {
 	}
 
 	return res, nil
+}
+
+func (tb *ToolBox) Upload(uploadPath string) (string, error) {
+	file, err := os.Open(path.Join(tb.dirPath, os.Getenv("OUTPUT_FILE_NAME")))
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	data, err := io.ReadAll(file)
+	if err != nil {
+		return "", err
+	}
+
+	return UploaderClient.Upload(data, uploadPath)
+}
+
+func (tb *ToolBox) Clean() error {
+	return os.RemoveAll(tb.dirPath)
 }

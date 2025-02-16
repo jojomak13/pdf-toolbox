@@ -29,7 +29,7 @@ func NewUploader() {
 	}
 }
 
-func (u *Uploader) Upload(content []byte, path string) string {
+func (u *Uploader) Upload(content []byte, path string) (string, error) {
 	out, err := u.client.Upload(&s3manager.UploadInput{
 		Bucket: aws.String(os.Getenv("S3_BUCKET")),
 		Key:    aws.String(path),
@@ -38,8 +38,8 @@ func (u *Uploader) Upload(content []byte, path string) string {
 	})
 
 	if err != nil {
-		Logger.Println(err)
+		return "", err
 	}
 
-	return out.Location
+	return out.Location, nil
 }
