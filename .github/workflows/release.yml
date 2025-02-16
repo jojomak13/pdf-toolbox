@@ -15,11 +15,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download build artifacts
-        uses: actions/download-artifact@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
         with:
-          name: pdf-toolbox
-          path: dist
+          go-version: '1.23'
+
+      - name: Build Release Binaries
+        run: |
+          mkdir -p dist
+          GOOS=linux GOARCH=amd64 go build -o dist/pdf-toolbox-linux-amd64 .
+          GOOS=darwin GOARCH=amd64 go build -o dist/pdf-toolbox-mac-amd64 .
+          GOOS=windows GOARCH=amd64 go build -o dist/pdf-toolbox-win-amd64.exe .
 
       - name: Generate changelog
         run: |
