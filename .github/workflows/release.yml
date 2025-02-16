@@ -15,6 +15,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: pdf-toolbox
+          path: dist
+
       - name: Generate changelog
         run: |
           # Get the previous tag, if it exists
