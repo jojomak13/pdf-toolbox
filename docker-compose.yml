@@ -1,9 +1,11 @@
-version: '3.8'
+version: "3.9"
 
 services:
   pdf-toolbox:
     image: jojomak/pdf-toolbox:latest
     container_name: pdf-toolbox
+    volumes:
+      - ./.env:/app/.env
     environment:
       - APP_NAME=PDF-Toolbox
       - S3_KEY=${S3_KEY}
