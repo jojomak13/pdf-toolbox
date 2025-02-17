@@ -3,6 +3,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/jojomak13/pdf-toolbox)](https://goreportcard.com/report/github.com/jojomak13/pdf-toolbox)
 [![Latest Release](https://img.shields.io/github/v/release/jojomak13/pdf-toolbox)](https://github.com/jojomak13/pdf-toolbox/releases/latest)
 [![License](https://img.shields.io/github/license/jojomak13/pdf-toolbox)](LICENSE)
+[![Docker Pulls](https://img.shields.io/docker/pulls/jojomak/pdf-toolbox)](https://hub.docker.com/r/jojomak/pdf-toolbox)
+[![Docker Image Size](https://img.shields.io/docker/image-size/jojomak/pdf-toolbox)](https://hub.docker.com/r/jojomak/pdf-toolbox)
+[![Docker Stars](https://img.shields.io/docker/stars/jojomak/pdf-toolbox)](https://hub.docker.com/r/jojomak/pdf-toolbox)
 
 A simple Go application for merging multiple PDF files into one with support for uploading to S3.
 
@@ -36,22 +39,39 @@ Download the latest release from [here](https://github.com/jojomak13/pdf-toolbox
 }
 ```
 
-## Environment Variables
+## 🐳 Docker Deployment
 
-Set the following environment variables before running the application:
-
+### Quick Start
+```bash
+docker-compose up -d
 ```
-APP_NAME="PDF-Toolbox"
-PORT=8080
 
-# S3 Config
-S3_KEY=""
-S3_SECRET=""
-S3_REGION=""
-S3_BUCKET=""
+### Prerequisites
+- Docker and Docker Compose installed on your system
+- AWS S3 credentials (for storage functionality)
 
-OUTPUT_FILE_NAME="out.pdf"
+### Configuration
+Create a `.env` file in your project root with the following variables:
+
+```env
+# AWS S3 Configuration (Required)
+S3_KEY=your-aws-access-key
+S3_SECRET=your-aws-secret-key
+S3_REGION=your-aws-region
+S3_BUCKET=your-bucket-name
 ```
+
+### Environment Variables
+
+|Variable|Required|Default|Description|
+|----------|----------|---------|-------------|
+| APP_NAME | No | PDF-Toolbox | Application name |
+| PORT | No | 8080 | Port the application listens on |
+| S3_KEY | Yes | - | AWS Access Key ID |
+| S3_SECRET | Yes | - | AWS Secret Access Key |
+| S3_REGION | Yes | - | AWS Region |
+| S3_BUCKET | Yes | - | S3 Bucket name |
+| OUTPUT_FILE_NAME | No | out.pdf | Default output filename |
 
 ## License
 

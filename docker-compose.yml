@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  pdf-toolbox:
+    image: jojomak/pdf-toolbox:latest
+    container_name: pdf-toolbox
+    environment:
+      - APP_NAME=PDF-Toolbox
+      - S3_KEY=${S3_KEY}
+      - S3_SECRET=${S3_SECRET}
+      - S3_REGION=${S3_REGION}
+      - S3_BUCKET=${S3_BUCKET}
+      - OUTPUT_FILE_NAME=out.pdf
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
