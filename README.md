@@ -7,7 +7,7 @@
 [![Docker Image Size](https://img.shields.io/docker/image-size/jojomak/pdf-toolbox)](https://hub.docker.com/r/jojomak/pdf-toolbox)
 [![Docker Stars](https://img.shields.io/docker/stars/jojomak/pdf-toolbox)](https://hub.docker.com/r/jojomak/pdf-toolbox)
 
-A simple Go application for merging multiple PDF files into one with support for uploading to S3.
+A simple Go application for merging multiple PDF files into one and generate pdf from html with support for uploading to S3.
 
 ## Installation
 
@@ -33,6 +33,36 @@ Download the latest release from [here](https://github.com/jojomak13/pdf-toolbox
 {
     "data": {
         "url": "https://my-storage.amazonaws.com/invoices/02-2025-20-18_0_invoices.pdf"
+    },
+    "message": "success",
+    "status": true
+}
+```
+
+### Endpoint: `POST /html`
+
+This endpoint accepts raw HTML content and converts it into a PDF file.
+
+#### Headers
+- `FILE-PATH`: The path where the generated PDF will be saved.
+
+#### Request Body
+```html
+<html>
+<head>
+    <title>Sample PDF</title>
+</head>
+<body>
+    <h1>Hello, PDF!</h1>
+</body>
+</html>
+```
+
+#### Response (Success)
+```json
+{
+    "data": {
+        "url": "https://my-storage.amazonaws.com/generated/sample.pdf"
     },
     "message": "success",
     "status": true
