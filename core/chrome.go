@@ -34,7 +34,7 @@ func (ch *Chrome) LoadConfig(configs []chromedp.ExecAllocatorOption) {
 
 	browserCtx, cancel := chromedp.NewContext(allocCtx)
 
-	timeoutCtx, cancel := context.WithTimeout(browserCtx, 60*time.Second)
+	timeoutCtx, cancel := context.WithTimeout(browserCtx, 2*time.Minute)
 
 	ch.ctx = timeoutCtx
 	ch.cancel = cancel
