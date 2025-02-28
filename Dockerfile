@@ -29,7 +29,19 @@ RUN mkdir -p storage \
     && chmod -R 777 storage
 
 # Add necessary runtime dependencies
-RUN apk add --no-cache ca-certificates
+RUN apk add --no-cache \
+    ca-certificates \
+    chromium \
+    harfbuzz \
+    nss \
+    freetype \
+    ttf-freefont \
+    font-noto-emoji \
+    wqy-zenhei
+
+# Set environment variables for Chrome
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+    CHROME_PATH=/usr/lib/chromium/
 
 # Set default environment variables
 ENV APP_NAME="PDF-Toolbox" \
