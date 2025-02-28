@@ -35,6 +35,8 @@ func Merge(c *fiber.Ctx) error {
 	}
 
 	if err = toolBox.Clean(); err != nil {
+		core.Logger.Println(err.Error())
+
 		return core.WithError(c, err.Error(), http.StatusBadRequest)
 	}
 
