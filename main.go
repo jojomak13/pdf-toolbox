@@ -40,6 +40,8 @@ func main() {
 
 	app.Post("/merge", handlers.Merge)
 
+	app.Post("/html", handlers.HTML)
+
 	var port = "3000"
 
 	if os.Getenv("PORT") != "" {
