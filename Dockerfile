@@ -26,7 +26,7 @@ WORKDIR /app
 
 # Create storage directory
 RUN mkdir -p storage \
-    && chmod -R 777 /storage
+    && chmod -R 777 storage
 
 # Add necessary runtime dependencies
 RUN apk add --no-cache ca-certificates
